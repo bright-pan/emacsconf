@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Brgiht Pan's dotemacs file
 ;;; Last modified time 
-;;; Time-stamp: <Administrator 11/29/2010 10:09  >
+;;; Time-stamp: <bright 03/24/2011 09:47  >
 ;;; Life is a box of chocalates,
 ;;; you never know what you're gonna get.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -28,9 +28,10 @@
 (setq kill-ring-max 200)
 
 ;; 设置tab为8个空格的宽度，而不是原来的2
-(setq c-basic-offset 4)
-(setq tab-width 4)
+;(setq c-basic-offset 4)
+;(setq tab-width 4)
 (setq-default indent-tabs-mode nil)
+(setq default-tab-width 4)
 
 ;; 设置让光标指到某个括号与它匹配的括号
 (show-paren-mode t)
