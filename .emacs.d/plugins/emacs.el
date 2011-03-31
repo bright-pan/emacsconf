@@ -1,17 +1,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Filename:      .emacs
+;; Filename:      emacs.el
+;;                
+;; Copyright (C) 2010,  admirestator
 ;; Version:       
+;; Author:        admirestator <admirestator@gmail.com>
+;; Created at:    Mon Jun 21 15:56:07 2010
 ;;                
-;; Author:        Bright Pan <loststriker@gmail.com>
-;; Created at:    Mon Mar 28 19:45:44 2011
-;;                
-;;                
-;; Modified by:   Bright Pan <loststriker@gmail.com>
-;; Modified at:   Thu Mar 31 19:18:48 2011
-;;                
-;; Description:   
-;; Copyright (C) 2010-2011,  Bright Pan
+;; Description:   将此文件重命名为".emacs"，并在用户家
+;;                目录即可。
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
 
 ;;**********************	basic setting	*********************
 
@@ -24,8 +25,8 @@
 (setq todo-file-top "~/emacs/todo/top")
 
 ;;Personal information
-(setq user-full-name "Bright Pan")
-(setq user-mail-address "loststriker@gmail.com") 
+(setq user-full-name "admirestator")
+(setq user-mail-address "admirestator@gmail.com") 
 
 
 
@@ -76,7 +77,7 @@
 
 
 ;;Font
-(set-frame-font "10x20")
+(set-default-font "10x20")
 
 
 ;;不要生成临时文件
@@ -87,17 +88,17 @@
 (set-language-environment 'Chinese-GB)
 
 ;;写文件的编码方式
-(set-buffer-file-coding-system 'utf-8)
+(set-buffer-file-coding-system 'gb2312)
 
 ;;新建文件的编码方式
-(setq default-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'gb2312)
 
 ;;终端方式的编码方式
 (set-terminal-coding-system 'utf-8)
 
 ;;键盘输入的编码方式
-(set-keyboard-coding-system 'utf-8)
-
+;;(set-keyboard-coding-system 'gb2312) 
+    
 ;;读取或写入文件名的编码方式
 (setq file-name-coding-system 'utf-8) 
 
@@ -105,7 +106,7 @@
 (setq default-major-mode 'text-mode)
 
 ;;禁用启动信息
-(setq inhibit-startup-message t) 
+;;(setq inhibit-startup-message t) 
 
 
 ;;语法高亮
@@ -129,7 +130,7 @@
 
 
 ;; 隐藏滚动条。实际上再本机上的emacs-2.23是没有这个模式的。
-(scroll-bar-mode nil) 
+;;(scroll-bar-mode nil) 
 ;;去掉工具栏
 ;;(tool-bar-mode nil)
 ;;去掉菜单栏，我将F10绑定为显示菜单栏，万一什么东西忘了，需要菜单栏了可以摁F10调出，再摁F10就去掉菜单
@@ -297,12 +298,13 @@ gnus-group-posting-charset-alist '((".*" gb2312 (gb2312))))
 
 
 ;;热键设置
-(global-set-key [f5] 'compile)
+(global-set-key [f5] 'complile)
+	(setq-default compile-command "make")
 (global-set-key [f6] 'speedbar)
 (global-set-key [f7] 'gdb)
 (global-set-key [f8] 'previous-error)
 (global-set-key [f9] 'next-error)
-;;启动窗口gdb
+;;启动窗口gdb    
 (global-set-key [f10] 'gdb-many-windows)
 
 
@@ -318,6 +320,36 @@ gnus-group-posting-charset-alist '((".*" gb2312 (gb2312))))
 ;;(global-set-key [f1] 'goto-line);设置M-g为goto-line
 ;;(global-set-key [f7] 'other-frame);跳到其它窗格
 ;;(global-set-key [(f3)] 'speedbar);打开speedbar
+
+
+;;_____________C______________
+;;C预处理设置                                                               
+(setq c-macro-shrink-window-flag t)
+(setq c-macro-preprocessor "c")
+(setq c-macro-cppflags " ")
+(setq c-macro-prompt-flag t)
+(setq abbrev-mode t)
+    )
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+
+;;___________CPP______________
+;;CPP预处理设置
+(setq c-macro-shrink-window-flag t)
+(setq c-macro-preprocessor "cpp")
+(setq c-macro-cppflags " ")
+(setq c-macro-prompt-flag t)
+(setq abbrev-mode t)
+	)
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+
+
+;;下面这句是自动换行
+(c-toggle-auto-hungry-state 1)                                            
+(c-set-style "stroustrup"))
+(add-hook 'c-mode-common-hook 'program-mode)
+(add-hook 'c++-mode-common-hook 'program-mode)
 
 
 ;;======================            自动补全功能          =====================
@@ -349,17 +381,45 @@ try-expand-whole-kill))
 (autoload 'senator-try-expand-semantic "senator")
 ;;----------------------            End 自动补全		---------------------       
 
+
+
+(global-set-key "\C-ca" 'application-template-pl)
+
+;; Load a module template in a new unattached buffer...
+(defun module=pm ()
+  "Inserts the standard Perl module template"	; FOr help and info.
+  (Interactive "*")
+  (switch-to-buffer "module-template-pm")
+  (insert-file "~/.code_templates/perlmodule.pm"))
+;; Set to a specific key combination...
+(global-set-key "\C-cm" 'module-template-pm)
+
+;; Expand the following abbreviations while typing in text files...
+(abberv-mode 1)
+
+(define-abbrev-table 'global-abbrev-table '(
+					    ("pdbg"	"use Data::Dumper qw( Dumper );\nwarn dumper[];"	nil l)					    ("pdbp")	"#! /usr/bin/perl -w"	nil l)
+("pbmk"	"use Benchmark qw( cmpthese );'ncmpthese -10, {};"	nil l)
+("pusc"	"use Smart::Comments;\n\n###")	nil l)
+))
+
+(add-book 'text-mode-hook (lambada () (abbrev-mode l)))
+
+;;----------------------			END	cperl-mode			---------------------
+
+
 ;;**********************			常用编程插件		*********************
 
 
 ;;======================			auto-header			=====================
 (add-to-list 'load-path "~/.emacs.d/plugins/")
+(require 'auto-header)
 ;;加载auto-header.el文件,自动添加文件头
 (require 'auto-header)
 ;; 设置文件头中的姓名
-(setq header-full-name "Bright Pan")
+(setq header-full-name "admirestator")
 ;; 设置邮箱
-(setq header-email-address "loststriker@gmail.com")
+(setq header-email-address "admirestator@gmail.com")
 
 ;; 设置每次保存时要更新的项目
 (setq header-update-on-save
@@ -370,27 +430,83 @@ try-expand-whole-kill))
 ;; 设置文件头的显示格式
 (setq header-field-list
 '(  filename  ;;文件名
-    version
     blank     ;空行，下同
+    copyright ;版权
+    version
     author    ;作者
     created   ;创建人
     blank
+    description   ;描述
     blank
-    modified_by ;更改者
-	modified
+    ;;modified_by ;更改者
     blank
-	description   ;描述
-	copyright ;版权
-
     ;;status  ;状态，是否发布
     ;;更新
     ;;blank
   ))
 ;;----------------------		END	auto-header			---------------------
+
+
+
+
+
+;;======================			Load cedet			=====================
+;; See cedet/common/cedet.info for configuration details.
+(load-file "~/emacs.d/plugins/cedet-1.0pre7/common/cedet.el")
+
+
+;; Enable EDE (Project Management) features
+(global-ede-mode 1)
+
+;; Enable EDE for a pre-existing C++ project
+;; (ede-cpp-root-project "NAME" :file "~/myproject/Makefile")
+
+
+;; Enabling Semantic (code-parsing, smart completion) features
+;; Select one of the following:
+
+;; * This enables the database and idle reparse engines
+(semantic-load-enable-minimum-features)
+
+;; * This enables some tools useful for coding, such as summary mode
+;;   imenu support, and the semantic navigator
+(semantic-load-enable-code-helpers)
+
+;; * This enables even more coding tools such as intellisense mode
+;;   decoration mode, and stickyfunc mode (plus regular code helpers)
+;; (semantic-load-enable-gaudy-code-helpers)
+
+;; * This enables the use of Exuberent ctags if you have it installed.
+;;   If you use C++ templates or boost, you should NOT enable it.
+;; (semantic-load-enable-all-exuberent-ctags-support)
+;;   Or, use one of these two types of support.
+;;   Add support for new languges only via ctags.
+;; (semantic-load-enable-primary-exuberent-ctags-support)
+;;   Add support for using ctags as a backup parser.
+;; (semantic-load-enable-secondary-exuberent-ctags-support)
+
+;; Enable SRecode (Template management) minor-mode.
+;; (global-srecode-minor-mode 1)
+;;----------------------			END cedet			    ---------------------
+
+
+
+
+
+;;======================			Load ecb				=====================
+(add-to-list 'load-path "~/emacs.d/plugins/ecb-2.40")
+(require 'ecb)
+(require 'ecb-autoloads)
+;;打开emacs，然后M-x ecb-activate即可打开ecb。
+;;----------------------			END	ecb				---------------------
+
+
+
+
+
 ;;======================			Load cscope				=====================
-;(add-to-list 'load-path "~/.emacs.d/plugins/cscope-15.7a/contrib/xcscope")
+(add-to-list 'load-path "~/emacs.d/plugins/cscope-15.7a/contrib/xcscope")
 (require 'xcscope)
-;;(setq cscope-do-not-update-database t)
 ;;先M-x !，然后cscope -b，之后就可以在源代码中进行跳转了。命令见cscope菜单
 ;;这里有篇讲怎么在emacs下安装和使用cscope的：
 ;;http://ann77.stu.cdut.edu.cn/EmacsCscope.html
@@ -402,11 +518,10 @@ try-expand-whole-kill))
 
 ;;======================			Load color-theme			=====================
 ;;配色方案
-;(load-file "~/dos/emacs/color-theme.el")
+(load-file "~/dos/emacs/color-theme.el")
 (require 'color-theme)
-;(add-hook 'c-mode-common-hook 'color-theme-taylor)
-;(add-hook 'c++-mode-common-hook 'color-theme-taylor)
-(color-theme-taylor)
+;;(add-hook 'c-mode-common-hook 'color-theme-taylor)
+;;(add-hook 'c++-mode-common-hook 'color-theme-taylor)
 
 ;;----------------------			END	color-theme			---------------------
 
@@ -421,10 +536,10 @@ try-expand-whole-kill))
 ;;http://www.inet.net.nz/~nickrob/multi-gud.el
 ;;http://www.inet.net.nz/~nickrob/multi-gdb-ui.el
 
-;(add-to-list 'load-path"~/.emacs.d/plugins")
-;(setq gdb-many-windows t)
-;(load-library "multi-gud.el")
-;(load-library "multi-gdb-ui.el")
+(add-to-list 'load-path"~/.emacs.d/plugins")
+(setq gdb-many-windows t)
+(load-library "multi-gud.el")
+(load-library "multi-gdb-ui.el")
 ;;----------------------    			END	gdb-many-window			---------------------
 
 
@@ -444,8 +559,11 @@ try-expand-whole-kill))
 
 ;;======================			Load yasnippet				=====================
 ;;自动补全代码插件
-;(add-to-list 'load-path"~/.emacs.d/plugins")
+(add-to-list 'load-path"~/.emacs.d/plugins")
 (require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/plugins/")
 ;;----------------------			END	yasnippet			---------------------
+
+
+
