@@ -7,7 +7,7 @@
 ;;                
 ;;                
 ;; Modified by:   Bright Pan <loststriker@gmail.com>
-;; Modified at:   Thu Mar 31 19:18:48 2011
+;; Modified at:   Thu May 12 09:33:12 2011
 ;;                
 ;; Description:   
 ;; Copyright (C) 2010-2011,  Bright Pan
@@ -76,7 +76,6 @@
 
 
 ;;Font
-(set-frame-font "10x20")
 
 
 ;;不要生成临时文件
@@ -84,7 +83,7 @@
 (setq-default make-backup-files nil)
 
 ;;设置中文语言环境
-(set-language-environment 'Chinese-GB)
+(set-language-environment 'utf-8)
 
 ;;写文件的编码方式
 (set-buffer-file-coding-system 'utf-8)
@@ -100,6 +99,20 @@
 
 ;;读取或写入文件名的编码方式
 (setq file-name-coding-system 'utf-8) 
+
+
+(create-fontset-from-fontset-spec
+ (concat
+  "-*-courier-medium-r-normal-*-14-*-*-*-*-*-fontset-courier,"
+  "chinese-gb2312:-*-simsun-medium-r-*-*-14-*-*-*-c-*-gb2312*-*,"
+  "mule-unicode-0100-24ff:-*-simsun-medium-r-*-*-14-*-*-*-c-*-iso10646*-*,"
+  "korean-ksc5601:-*-*-medium-r-*-*-14-*-*-*-*-*-ksc5601*-*,"
+  "chinese-cns11643-5:-*-simsun-medium-r-*-*-14-*-*-*-c-*-gbk*-*,"
+  "chinese-cns11643-6:-*-simsun-medium-r-*-*-14-*-*-*-c-*-gbk*-*,"
+  "chinese-cns11643-7:-*-simsun-medium-r-*-*-14-*-*-*-c-*-gbk*-*,"
+  "sjis:-*-medium-r-normal--14-*-jisx0208*-*"))
+
+(set-frame-font "fontset-courier")
 
 ;;打开就启用 text 模式
 (setq default-major-mode 'text-mode)
