@@ -7,7 +7,7 @@
 ;;                
 ;;                
 ;; Modified by:   Bright Pan <loststriker@gmail.com>
-;; Modified at:   Thu May 12 09:33:12 2011
+;; Modified at:   Thu May 12 17:58:41 2011
 ;;                
 ;; Description:   
 ;; Copyright (C) 2010-2011,  Bright Pan
@@ -144,7 +144,7 @@
 ;; 隐藏滚动条。实际上再本机上的emacs-2.23是没有这个模式的。
 (scroll-bar-mode nil) 
 ;;去掉工具栏
-;;(tool-bar-mode nil)
+(tool-bar-mode nil)
 ;;去掉菜单栏，我将F10绑定为显示菜单栏，万一什么东西忘了，需要菜单栏了可以摁F10调出，再摁F10就去掉菜单
 (menu-bar-mode nil)
 
