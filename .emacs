@@ -7,7 +7,7 @@
 ;;                
 ;;                
 ;; Modified by:   Bright Pan <loststriker@gmail.com>
-;; Modified at:   Thu May 12 17:58:41 2011
+;; Modified at:   Fri Oct 28 11:23:29 2011
 ;;                
 ;; Description:   
 ;; Copyright (C) 2010-2011,  Bright Pan
@@ -89,7 +89,7 @@
 (set-buffer-file-coding-system 'utf-8)
 
 ;;新建文件的编码方式
-(setq default-buffer-file-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
 
 ;;终端方式的编码方式
 (set-terminal-coding-system 'utf-8)
@@ -115,7 +115,7 @@
 (set-frame-font "fontset-courier")
 
 ;;打开就启用 text 模式
-(setq default-major-mode 'text-mode)
+(setq major-mode 'text-mode)
 
 ;;禁用启动信息
 (setq inhibit-startup-message t) 
@@ -166,13 +166,14 @@
 
 
 ;;显示80列就换行
-(setq default-fill-column 80) 
+(setq fill-column 80) 
 
 ;;禁止终端响铃
 (setq visiable-bell t) 
     
 ;;设置tab为4个空格的宽度
-(setq default-tab-width 4)
+(setq-default indent-tabs-mode  nil)
+(setq tab-width 4)
 
 
 
