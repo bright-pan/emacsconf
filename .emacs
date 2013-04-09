@@ -37,6 +37,7 @@
 (set-keyboard-coding-system 'utf-8)
 ;;读取或写入文件名的编码方式
 (setq file-name-coding-system 'utf-8)
+
 ;================================================
 ;                   el-get
 ;================================================
@@ -53,7 +54,7 @@
 
 (defconst elget-dir "~/.emacs.d/el-get/")
 ;================================================
-;                  color theme
+;                  YASnippet
 ;================================================
 (add-to-list 'load-path (concat elget-dir "yasnippet"))
 (require 'yasnippet)
@@ -63,7 +64,8 @@
 ;================================================
 ;                   Auto-Complete
 ;================================================
-
+(add-to-list 'load-path (concat elget-dir "auto-complete-yasnippet"))
+(require 'auto-complete-yasnippet)
 (add-to-list 'load-path (concat elget-dir "auto-complete"))
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat elget-dir "auto-complete/ac-dict"))
@@ -90,13 +92,28 @@
 (my-ac-config)
 
 
+ 
+ 
+ 
+ 
+
+
+;(defconst user-include-dirs 
+;  (list "/usr/include"
+;	"/usr/local/include"  
+;	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/include"
+;	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2"
+;	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2/x86_64-redhat-linux"
+;	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2/backward"
+;	))
+
 (defconst user-include-dirs 
-  (list "/usr/include"
-	"/usr/local/include"  
-	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/include"
-	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2"
-	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2/x86_64-redhat-linux"
-	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2/backward"
+  (list "/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3"
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3/arm-none-eabi"  
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3/backward"
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/lib/gcc/arm-none-eabi/4.7.3/include"
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/lib/gcc/arm-none-eabi/4.7.3/include-fixed"
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include"
 	))
 (setq ac-clang-flags 
       (mapcar (lambda (item)(concat "-I" item)) 
