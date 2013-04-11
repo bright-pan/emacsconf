@@ -1,0 +1,6 @@
+[user]
+	email = loststriker@gmail.com
+	name = Bright Pan
+[core]
+	editor = emacs
+	autocrlf = input
