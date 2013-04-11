@@ -21,6 +21,8 @@
 		     (progn
 		       (color-theme-initialize)
 		       (setq color-theme-is-global t))))
+ (cscope status "installed" recipe
+	 (:name cscope :auto-generated t :type emacswiki :description "Interface to cscope browser" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/cscope.el"))
  (el-get status "installed" recipe
 	 (:name el-get :website "https://github.com/dimitri/el-get#readme" :description "Manage the external elisp bits and pieces you depend upon." :type github :branch "4.stable" :pkgname "dimitri/el-get" :info "." :load "el-get.el"))
  (fuzzy status "installed" recipe
@@ -29,6 +31,10 @@
 	 (:name linum+ :auto-generated t :type emacswiki :description "Extension of linum" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/linum+.el"))
  (popup status "installed" recipe
 	(:name popup :website "https://github.com/auto-complete/popup-el" :description "Visual Popup Interface Library for Emacs" :type github :pkgname "auto-complete/popup-el"))
+ (xcscope status "installed" recipe
+	  (:name xcscope :description "Cscope interface for (X)Emacs" :type github :pkgname "vmfhrmfoaj/cscope-el" :features xcscope))
+ (xcscope+ status "installed" recipe
+	   (:name xcscope+ :description "Providing an extension to xcscope." :type emacswiki))
  (yasnippet status "installed" recipe
 	    (:name yasnippet :website "https://github.com/capitaomorte/yasnippet.git" :description "YASnippet is a template system for Emacs." :type github :pkgname "capitaomorte/yasnippet" :features "yasnippet" :pre-init
 		   (unless

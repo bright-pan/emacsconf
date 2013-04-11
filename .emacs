@@ -18,11 +18,20 @@
   "sjis:-*-medium-r-normal--14-*-jisx0208*-*"))
 
 (set-frame-font "fontset-courier")
+
+(windmove-default-keybindings 'M)
+;;Emacs分割窗口快速切换
 (column-number-mode t) 
 ;;显示括号匹配
 (show-paren-mode t) 
 ;;不要生成临时文件
 (setq-default make-backup-files nil)
+;; 取消自动保存
+(auto-save-mode 0)
+;; 'y' for 'yes', 'n' for 'no'
+(fset 'yes-or-no-p 'y-or-n-p) 
+;; 隐藏滚动条
+(scroll-bar-mode -1)
 ;;支持emacs和外部程序的拷贝粘贴
 (setq x-select-enable-clipboard t) 
 ;;设置中文语言环境
@@ -92,12 +101,6 @@
 (my-ac-config)
 
 
- 
- 
- 
- 
-
-
 ;(defconst user-include-dirs 
 ;  (list "/usr/include"
 ;	"/usr/local/include"  
@@ -107,8 +110,20 @@
 ;	"/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../include/c++/4.7.2/backward"
 ;	))
 
+
 (defconst user-include-dirs 
-  (list "/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3"
+  (list "/home/bright/smart-lock"
+	"/home/bright/smart-lock/RT-Thread"
+	"/home/bright/smart-lock/RT-Thread/include"
+	"/home/bright/smart-lock/RT-Thread/libcpu/arm/common"
+	"/home/bright/smart-lock/RT-Thread/libcpu/arm/cortex-m3"
+	"/home/bright/smart-lock/RT-Thread/components/finsh"
+	"/home/bright/smart-lock/RT-Thread/components/libc/minilibc"
+	"/home/bright/smart-lock/RT-Thread/components/CMSIS/Include"
+	"/home/bright/smart-lock/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x"
+	"/home/bright/smart-lock/Libraries/STM32F10x_StdPeriph_Driver/inc"
+	"/home/bright/smart-lock/RT-Thread/components/libc/minilibc"
+	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3"
 	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3/arm-none-eabi"  
 	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/arm-none-eabi/include/c++/4.7.3/backward"
 	"/usr/local/gcc-arm-none-eabi-4_7-2013q1/lib/gcc/arm-none-eabi/4.7.3/include"
@@ -129,18 +144,18 @@
 ;================================================
 ;                   c/c++
 ;================================================
+(add-to-list 'load-path elget-dir)
+(require 'google-c-style)
+
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+
 (defun my-c-mode-common-hook()
-  (c-set-style "k&r") ;;设置C语言默认格式
-  (setq tab-width 4 indent-tabs-mode nil)  
-  ;;按键定义
-  (define-key c-mode-base-map [(return)] 'newline-and-indent)
-  ;;预处理设置  
-  (setq abbrev-mode t)  
-)
+   (define-key c-mode-base-map [(return)] 'newline-and-indent)
+   (define-key c-mode-base-map [(f7)] 'compile)
+   )
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
-(add-hook 'c++-mode-common-hook(lambda()(c-set-style "k&r"))) ;;设置C++语言默认格式
+;(add-hook 'c++-mode-common-hook(lambda()(c-set-style "k&r"))) ;;设置C++语言默认格式
 
 ;================================================
 ;                  color theme
@@ -159,3 +174,10 @@
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
 		("\\.cmake\\'" . cmake-mode))
 	      auto-mode-alist))
+;================================================
+;                  color theme
+;================================================
+(add-to-list 'load-path (concat elget-dir "xcscope"))
+(require 'xcscope)
+(setq cscope-do-not-update-database t)
+
