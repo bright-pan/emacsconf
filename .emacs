@@ -86,6 +86,9 @@
 ;; (ac-set-trigger-key "TAB")
 ;; (define-key ac-mode-map  [(control tab)] 'auto-complete)
 (define-key ac-mode-map  [(meta /)] 'auto-complete)
+;;(define-key ac-mode-map [(control n)] 'ac-next)
+;;(define-key ac-mode-map [(control p)] 'ac-previous)
+
 (defun my-ac-config ()
   (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
@@ -95,7 +98,7 @@
   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
   (global-auto-complete-mode t))
 (defun my-ac-cc-mode-setup ()
-  (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
+  (setq ac-sources (append '(ac-source-clang ac-source-yasnippet ac-source-semantic) ac-sources)))
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 ;; ac-source-gtags
 (my-ac-config)
@@ -144,6 +147,12 @@
 ;================================================
 ;                   c/c++
 ;================================================
+;; Semantic
+(semantic-mode 1)
+(semantic-load-enable-minimum-features)
+(semantic-load-enable-code-helpers)
+(semantic-load-enable-semantic-debugging-helpers)
+
 (add-to-list 'load-path elget-dir)
 (require 'google-c-style)
 
@@ -152,9 +161,8 @@
 (defun my-c-mode-common-hook()
    (define-key c-mode-base-map [(return)] 'newline-and-indent)
    (define-key c-mode-base-map [(f7)] 'compile)
-   )
-
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+)
+   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 ;(add-hook 'c++-mode-common-hook(lambda()(c-set-style "k&r"))) ;;设置C++语言默认格式
 
 ;================================================
