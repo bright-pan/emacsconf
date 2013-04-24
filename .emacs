@@ -18,7 +18,7 @@
   "sjis:-*-medium-r-normal--14-*-jisx0208*-*"))
 
 (set-frame-font "fontset-courier")
-
+(setq kill-ring-max 1024)
 (windmove-default-keybindings 'M)
 ;;Emacs分割窗口快速切换
 (column-number-mode t) 
@@ -68,7 +68,11 @@
 (add-to-list 'load-path (concat elget-dir "yasnippet"))
 (require 'yasnippet)
 (yas-global-mode 1)
-
+;================================================
+;                  YASnippet
+;================================================
+(add-to-list 'load-path (concat elget-dir "xgtags"))
+(require 'xgtags)
 
 ;================================================
 ;                   Auto-Complete
@@ -80,14 +84,27 @@
 (add-to-list 'ac-dictionary-directories (concat elget-dir "auto-complete/ac-dict"))
 
 (require 'auto-complete-clang)
-    
+
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; Show 0.8 second later
+(setq ac-auto-show-menu 0.8)
 (setq ac-auto-start nil)
-(setq ac-quick-help-delay 0.5)
+(setq ac-menu-height 20)
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline-p 'ac-candidate-face "darkgray")
+(set-face-background 'ac-selection-face "steelblue")
+;(add-hook 'c++-mode (lambda () (add-to-list 'ac-sources 'ac-source-semantic)))
 ;; (ac-set-trigger-key "TAB")
 ;; (define-key ac-mode-map  [(control tab)] 'auto-complete)
 (define-key ac-mode-map  [(meta /)] 'auto-complete)
 ;;(define-key ac-mode-map [(control n)] 'ac-next)
 ;;(define-key ac-mode-map [(control p)] 'ac-previous)
+(setq ac-use-menu-map t)
+;; Default settings
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
 
 (defun my-ac-config ()
   (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
@@ -98,7 +115,7 @@
   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
   (global-auto-complete-mode t))
 (defun my-ac-cc-mode-setup ()
-  (setq ac-sources (append '(ac-source-clang ac-source-yasnippet ac-source-semantic) ac-sources)))
+  (setq ac-sources (append '(ac-source-clang ac-source-yasnippet ac-source-semantic ac-source-gtags) ac-sources)))
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 ;; ac-source-gtags
 (my-ac-config)
@@ -115,7 +132,10 @@
 
 
 (defconst user-include-dirs 
-  (list "/home/bright/smart-lock"
+  (list "."
+	"/home/bright/smart-lock/RT-Thread/components/drivers/include/drivers"
+	"/home/bright/smart-lock/RT-Thread/components/drivers/include"
+	"/home/bright/smart-lock"
 	"/home/bright/smart-lock/RT-Thread"
 	"/home/bright/smart-lock/RT-Thread/include"
 	"/home/bright/smart-lock/RT-Thread/libcpu/arm/common"
@@ -147,24 +167,59 @@
 ;================================================
 ;                   c/c++
 ;================================================
-;; Semantic
-(semantic-mode 1)
-(semantic-load-enable-minimum-features)
-(semantic-load-enable-code-helpers)
-(semantic-load-enable-semantic-debugging-helpers)
 
 (add-to-list 'load-path elget-dir)
 (require 'google-c-style)
 
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 
-(defun my-c-mode-common-hook()
-   (define-key c-mode-base-map [(return)] 'newline-and-indent)
-   (define-key c-mode-base-map [(f7)] 'compile)
-)
-   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-;(add-hook 'c++-mode-common-hook(lambda()(c-set-style "k&r"))) ;;设置C++语言默认格式
+(defun ac-complete-semantic-self-insert (arg)
+    (interactive "p")
+    (self-insert-command arg)
+    (ac-complete-semantic))
 
+(defun my-c-mode-common-hook()
+  (semantic-mode 1)
+
+  (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+				    global-semanticdb-minor-mode
+				    global-semantic-idle-summary-mode
+				    global-semantic-mru-bookmark-mode))
+
+  (defconst cedet-include-dirs
+    (list ".." "../include" "../inc" "../common" "../public"
+	  "../.." "../../include" "../../inc" "../../common" "../../public"))
+  (defconst sys-include-dirs
+    (list "C:/MinGW/include"
+	  "C:/MinGW/include/c++/3.4.5"
+	  "C:/MinGW/include/c++/3.4.5/mingw32"
+	  "C:/MinGW/include/c++/3.4.5/backward"
+	  "C:/MinGW/lib/gcc/mingw32/3.4.5/include"
+	  "C:/Program Files/Microsoft Visual Studio/VC98/MFC/Include"))
+  (let ((include-dirs cedet-include-dirs))
+    (when (eq system-type 'windows-nt)
+      (setq include-dirs (append include-dirs sys-include-dirs)))
+    (setq include-dirs (append include-dirs user-include-dirs))
+    (mapc (lambda (dir)
+	    (semantic-add-system-include dir 'c++-mode)
+	    (semantic-add-system-include dir 'c-mode))
+	  include-dirs))
+
+  (define-key c-mode-base-map [(return)] 'newline-and-indent)
+  (define-key c-mode-base-map [(f7)] 'compile)
+  (local-set-key "." 'ac-complete-semantic-self-insert)
+  (local-set-key ">" 'ac-complete-semantic-self-insert)
+  (xgtags-mode 1)
+)
+;;   (semantic-mode 1)
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+;(add-hook 'c++-mode-common-hook(lambda()(c-set-style "k&r"))) ;;设置C++语言默认格式
+;================================================
+;                  color theme
+;================================================
+(add-to-list 'load-path (concat elget-dir "xcscope"))
+(require 'xcscope)
+(setq cscope-do-not-update-database t)
 ;================================================
 ;                  color theme
 ;================================================
@@ -182,13 +237,6 @@
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
 		("\\.cmake\\'" . cmake-mode))
 	      auto-mode-alist))
-;================================================
-;                  color theme
-;================================================
-(add-to-list 'load-path (concat elget-dir "xcscope"))
-(require 'xcscope)
-(setq cscope-do-not-update-database t)
-
 ;================================================
 ;                  color theme
 ;================================================
