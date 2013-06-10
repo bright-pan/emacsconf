@@ -227,6 +227,34 @@
 
 (require 'color-theme)
 (color-theme-euphoria)
+;================================================
+;                  color theme
+;================================================
+(add-to-list 'load-path (concat elget-dir "cl-lib"))
+
+(require 'cl-lib)
+
+;================================================
+;                  magit
+;================================================
+(add-to-list 'load-path (concat elget-dir "magit"))
+
+(require 'magit)
+
+
+;================================================
+;                  stardict
+;================================================
+(add-to-list 'load-path (concat elget-dir "stardict"))
+
+(require 'stardict)
+
+;================================================
+;                  stardict
+;================================================
+(add-to-list 'load-path (concat elget-dir "org-mode/lisp"))
+
+(require 'org)
 
 ;================================================
 ;                  color theme
@@ -248,3 +276,17 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+(put 'upcase-region 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(show-paren-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
